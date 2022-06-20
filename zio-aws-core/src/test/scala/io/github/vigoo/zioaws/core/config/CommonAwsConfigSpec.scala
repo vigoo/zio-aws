@@ -23,7 +23,7 @@ import scala.reflect.ClassTag
 object CommonAwsConfigSpec extends DefaultRunnableSpec {
   override def spec: ZSpec[TestEnvironment, Any] =
     suite("commonAwsConfig")(
-      test("can read example HOCON") {
+      testM("can read example HOCON") {
         val example =
           """region = "us-east-1"
             |credentials {
@@ -42,11 +42,12 @@ object CommonAwsConfigSpec extends DefaultRunnableSpec {
             |""".stripMargin
 
         val config = for {
-          source <- TypesafeConfigSource.fromHoconString(example)
+          _ <- zio.ZIO.unit
+          source = TypesafeConfigSource.fromHoconString(example)
           config = descriptors.commonAwsConfig from source
-          result <- read(config)
+          result <- read(config).either
         } yield result
-        assert(config)(
+        assertM(config)(
           isRight(
             hasField[CommonAwsConfig, Option[Region]](
               "region",
