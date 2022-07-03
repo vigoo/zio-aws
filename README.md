@@ -7,5 +7,5 @@
 
 Check [the documentation page](https://vigoo.github.io/zio-aws/docs/).
 
-**NOTE** This is the old stable version of **zio-aws** for ZIO 1. [New version is under development under the **zio** organisation](https://github.com/zio/zio-aws)
+**NOTE** This is the old ZIO 1 version of **zio-aws** and is no longer in active development. [The new version can be found in the **zio** organisation](https://github.com/zio/zio-aws)
 
