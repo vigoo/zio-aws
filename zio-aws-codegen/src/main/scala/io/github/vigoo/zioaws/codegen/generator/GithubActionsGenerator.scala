@@ -58,7 +58,7 @@ trait GithubActionsGenerator {
             checkoutCurrentBranch(),
             setupScala(Some(JavaVersion.ZuluJDK17)),
             cacheSBT(
-              os = Some(OS.UbuntuLatest),
+              os = Some(OS.Ubuntu2004),
               scalaVersion = Some(scala213)
             ),
             setupGitUser(),
@@ -246,24 +246,24 @@ trait GithubActionsGenerator {
             setupGPG(),
             loadPGPSecret(),
             cacheSBT(
-              os = Some(OS.UbuntuLatest),
+              os = Some(OS.Ubuntu2004),
               scalaVersion = Some(scala213)
             ),
             loadStoredTargets(
               "core" :: grouped.indices.map(idx => s"clients-$idx").toList,
-              os = Some(OS.UbuntuLatest),
+              os = Some(OS.Ubuntu2004),
               scalaVersion = Some(scala213),
               javaVersion = Some(JavaVersion.ZuluJDK17)
             ),
             loadStoredTargets(
               "core" :: grouped.indices.map(idx => s"clients-$idx").toList,
-              os = Some(OS.UbuntuLatest),
+              os = Some(OS.Ubuntu2004),
               scalaVersion = Some(scala212),
               javaVersion = Some(JavaVersion.ZuluJDK17)
             ),
             loadStoredTargets(
               "core" :: grouped.indices.map(idx => s"clients-$idx").toList,
-              os = Some(OS.UbuntuLatest),
+              os = Some(OS.Ubuntu2004),
               scalaVersion = Some(scala3),
               javaVersion = Some(JavaVersion.ZuluJDK17)
             ),
@@ -292,7 +292,7 @@ trait GithubActionsGenerator {
             checkoutCurrentBranch(),
             setupScala(Some(JavaVersion.ZuluJDK17)),
             cacheSBT(
-              os = Some(OS.UbuntuLatest),
+              os = Some(OS.Ubuntu2004),
               scalaVersion = Some(scala213)
             ),
             setupGitUser(),

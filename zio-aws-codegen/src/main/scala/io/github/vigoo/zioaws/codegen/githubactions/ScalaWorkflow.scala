@@ -217,7 +217,7 @@ object ScalaWorkflow {
   implicit class JobOps(job: Job) {
     def matrix(
         scalaVersions: Seq[ScalaVersion],
-        operatingSystems: Seq[OS] = Seq(OS.UbuntuLatest),
+        operatingSystems: Seq[OS] = Seq(OS.Ubuntu2004),
         javaVersions: Seq[JavaVersion] = Seq(ZuluJDK17)
     ): Job =
       job.copy(

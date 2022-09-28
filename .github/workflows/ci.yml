@@ -29,7 +29,7 @@ jobs:
           ~/.coursier/cache/v1
 
           ~/.cache/coursier/v1
-        key: ubuntu-latest-sbt-2.13.8-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('**/build.properties')
+        key: ubuntu-20.04-sbt-2.13.8-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('**/build.properties')
           }}
     - name: Setup GIT user
       uses: fregante/setup-git-user@v1
@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -133,7 +133,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -191,7 +191,7 @@ jobs:
         zio-aws-applicationinsights/compile zio-aws-appmesh/compile zio-aws-apprunner/compile
         zio-aws-appstream/compile zio-aws-appsync/compile zio-aws-athena/compile zio-aws-auditmanager/compile
         zio-aws-autoscaling/compile zio-aws-autoscalingplans/compile zio-aws-backup/compile
-        zio-aws-backupgateway/compile zio-aws-batch/compile
+        zio-aws-backupgateway/compile zio-aws-backupstorage/compile zio-aws-batch/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-accessanalyzer/publishSigned
@@ -205,7 +205,8 @@ jobs:
         zio-aws-applicationinsights/publishSigned zio-aws-appmesh/publishSigned zio-aws-apprunner/publishSigned
         zio-aws-appstream/publishSigned zio-aws-appsync/publishSigned zio-aws-athena/publishSigned
         zio-aws-auditmanager/publishSigned zio-aws-autoscaling/publishSigned zio-aws-autoscalingplans/publishSigned
-        zio-aws-backup/publishSigned zio-aws-backupgateway/publishSigned zio-aws-batch/publishSigned
+        zio-aws-backup/publishSigned zio-aws-backupgateway/publishSigned zio-aws-backupstorage/publishSigned
+        zio-aws-batch/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -225,7 +226,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -284,6 +285,7 @@ jobs:
         zio-aws-codecommit/compile zio-aws-codedeploy/compile zio-aws-codeguruprofiler/compile
         zio-aws-codegurureviewer/compile zio-aws-codepipeline/compile zio-aws-codestar/compile
         zio-aws-codestarconnections/compile zio-aws-codestarnotifications/compile
+        zio-aws-cognitoidentity/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-billingconductor/publishSigned
@@ -298,6 +300,7 @@ jobs:
         zio-aws-codecommit/publishSigned zio-aws-codedeploy/publishSigned zio-aws-codeguruprofiler/publishSigned
         zio-aws-codegurureviewer/publishSigned zio-aws-codepipeline/publishSigned
         zio-aws-codestar/publishSigned zio-aws-codestarconnections/publishSigned zio-aws-codestarnotifications/publishSigned
+        zio-aws-cognitoidentity/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -317,7 +320,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -365,31 +368,32 @@ jobs:
         rm targets.tar
     - name: Build libraries
       if: ${{ github.ref != 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-cognitoidentity/compile
-        zio-aws-cognitoidentityprovider/compile zio-aws-cognitosync/compile zio-aws-comprehend/compile
-        zio-aws-comprehendmedical/compile zio-aws-computeoptimizer/compile zio-aws-config/compile
-        zio-aws-connect/compile zio-aws-connectcontactlens/compile zio-aws-connectparticipant/compile
-        zio-aws-costandusagereport/compile zio-aws-costexplorer/compile zio-aws-customerprofiles/compile
-        zio-aws-databasemigration/compile zio-aws-databrew/compile zio-aws-dataexchange/compile
-        zio-aws-datapipeline/compile zio-aws-datasync/compile zio-aws-dax/compile
-        zio-aws-detective/compile zio-aws-devicefarm/compile zio-aws-devopsguru/compile
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-cognitoidentityprovider/compile
+        zio-aws-cognitosync/compile zio-aws-comprehend/compile zio-aws-comprehendmedical/compile
+        zio-aws-computeoptimizer/compile zio-aws-config/compile zio-aws-connect/compile
+        zio-aws-connectcampaigns/compile zio-aws-connectcontactlens/compile zio-aws-connectparticipant/compile
+        zio-aws-controltower/compile zio-aws-costandusagereport/compile zio-aws-costexplorer/compile
+        zio-aws-customerprofiles/compile zio-aws-databasemigration/compile zio-aws-databrew/compile
+        zio-aws-dataexchange/compile zio-aws-datapipeline/compile zio-aws-datasync/compile
+        zio-aws-dax/compile zio-aws-detective/compile zio-aws-devicefarm/compile zio-aws-devopsguru/compile
         zio-aws-directconnect/compile zio-aws-directory/compile zio-aws-dlm/compile
         zio-aws-docdb/compile zio-aws-drs/compile zio-aws-dynamodb/compile zio-aws-dynamodbstreams/compile
         zio-aws-ebs/compile zio-aws-ec2instanceconnect/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-cognitoidentity/publishSigned
-        zio-aws-cognitoidentityprovider/publishSigned zio-aws-cognitosync/publishSigned
-        zio-aws-comprehend/publishSigned zio-aws-comprehendmedical/publishSigned zio-aws-computeoptimizer/publishSigned
-        zio-aws-config/publishSigned zio-aws-connect/publishSigned zio-aws-connectcontactlens/publishSigned
-        zio-aws-connectparticipant/publishSigned zio-aws-costandusagereport/publishSigned
-        zio-aws-costexplorer/publishSigned zio-aws-customerprofiles/publishSigned
-        zio-aws-databasemigration/publishSigned zio-aws-databrew/publishSigned zio-aws-dataexchange/publishSigned
-        zio-aws-datapipeline/publishSigned zio-aws-datasync/publishSigned zio-aws-dax/publishSigned
-        zio-aws-detective/publishSigned zio-aws-devicefarm/publishSigned zio-aws-devopsguru/publishSigned
-        zio-aws-directconnect/publishSigned zio-aws-directory/publishSigned zio-aws-dlm/publishSigned
-        zio-aws-docdb/publishSigned zio-aws-drs/publishSigned zio-aws-dynamodb/publishSigned
-        zio-aws-dynamodbstreams/publishSigned zio-aws-ebs/publishSigned zio-aws-ec2instanceconnect/publishSigned
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-cognitoidentityprovider/publishSigned
+        zio-aws-cognitosync/publishSigned zio-aws-comprehend/publishSigned zio-aws-comprehendmedical/publishSigned
+        zio-aws-computeoptimizer/publishSigned zio-aws-config/publishSigned zio-aws-connect/publishSigned
+        zio-aws-connectcampaigns/publishSigned zio-aws-connectcontactlens/publishSigned
+        zio-aws-connectparticipant/publishSigned zio-aws-controltower/publishSigned
+        zio-aws-costandusagereport/publishSigned zio-aws-costexplorer/publishSigned
+        zio-aws-customerprofiles/publishSigned zio-aws-databasemigration/publishSigned
+        zio-aws-databrew/publishSigned zio-aws-dataexchange/publishSigned zio-aws-datapipeline/publishSigned
+        zio-aws-datasync/publishSigned zio-aws-dax/publishSigned zio-aws-detective/publishSigned
+        zio-aws-devicefarm/publishSigned zio-aws-devopsguru/publishSigned zio-aws-directconnect/publishSigned
+        zio-aws-directory/publishSigned zio-aws-dlm/publishSigned zio-aws-docdb/publishSigned
+        zio-aws-drs/publishSigned zio-aws-dynamodb/publishSigned zio-aws-dynamodbstreams/publishSigned
+        zio-aws-ebs/publishSigned zio-aws-ec2instanceconnect/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -409,7 +413,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -462,12 +466,12 @@ jobs:
         zio-aws-elasticache/compile zio-aws-elasticbeanstalk/compile zio-aws-elasticinference/compile
         zio-aws-elasticloadbalancing/compile zio-aws-elasticloadbalancingv2/compile
         zio-aws-elasticsearch/compile zio-aws-elastictranscoder/compile zio-aws-emr/compile
-        zio-aws-emrcontainers/compile zio-aws-eventbridge/compile zio-aws-evidently/compile
-        zio-aws-finspace/compile zio-aws-finspacedata/compile zio-aws-firehose/compile
-        zio-aws-fis/compile zio-aws-fms/compile zio-aws-forecast/compile zio-aws-forecastquery/compile
-        zio-aws-frauddetector/compile zio-aws-fsx/compile zio-aws-gamelift/compile
-        zio-aws-gamesparks/compile zio-aws-glacier/compile zio-aws-globalaccelerator/compile
-        zio-aws-glue/compile zio-aws-grafana/compile
+        zio-aws-emrcontainers/compile zio-aws-emrserverless/compile zio-aws-eventbridge/compile
+        zio-aws-evidently/compile zio-aws-finspace/compile zio-aws-finspacedata/compile
+        zio-aws-firehose/compile zio-aws-fis/compile zio-aws-fms/compile zio-aws-forecast/compile
+        zio-aws-forecastquery/compile zio-aws-frauddetector/compile zio-aws-fsx/compile
+        zio-aws-gamelift/compile zio-aws-gamesparks/compile zio-aws-glacier/compile
+        zio-aws-globalaccelerator/compile zio-aws-glue/compile zio-aws-grafana/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-ecr/publishSigned
@@ -476,12 +480,12 @@ jobs:
         zio-aws-elasticinference/publishSigned zio-aws-elasticloadbalancing/publishSigned
         zio-aws-elasticloadbalancingv2/publishSigned zio-aws-elasticsearch/publishSigned
         zio-aws-elastictranscoder/publishSigned zio-aws-emr/publishSigned zio-aws-emrcontainers/publishSigned
-        zio-aws-eventbridge/publishSigned zio-aws-evidently/publishSigned zio-aws-finspace/publishSigned
-        zio-aws-finspacedata/publishSigned zio-aws-firehose/publishSigned zio-aws-fis/publishSigned
-        zio-aws-fms/publishSigned zio-aws-forecast/publishSigned zio-aws-forecastquery/publishSigned
-        zio-aws-frauddetector/publishSigned zio-aws-fsx/publishSigned zio-aws-gamelift/publishSigned
-        zio-aws-gamesparks/publishSigned zio-aws-glacier/publishSigned zio-aws-globalaccelerator/publishSigned
-        zio-aws-glue/publishSigned zio-aws-grafana/publishSigned
+        zio-aws-emrserverless/publishSigned zio-aws-eventbridge/publishSigned zio-aws-evidently/publishSigned
+        zio-aws-finspace/publishSigned zio-aws-finspacedata/publishSigned zio-aws-firehose/publishSigned
+        zio-aws-fis/publishSigned zio-aws-fms/publishSigned zio-aws-forecast/publishSigned
+        zio-aws-forecastquery/publishSigned zio-aws-frauddetector/publishSigned zio-aws-fsx/publishSigned
+        zio-aws-gamelift/publishSigned zio-aws-gamesparks/publishSigned zio-aws-glacier/publishSigned
+        zio-aws-globalaccelerator/publishSigned zio-aws-glue/publishSigned zio-aws-grafana/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -501,7 +505,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -559,7 +563,7 @@ jobs:
         zio-aws-iotfleethub/compile zio-aws-iotjobsdataplane/compile zio-aws-iotsecuretunneling/compile
         zio-aws-iotsitewise/compile zio-aws-iotthingsgraph/compile zio-aws-iottwinmaker/compile
         zio-aws-iotwireless/compile zio-aws-ivs/compile zio-aws-ivschat/compile zio-aws-kafka/compile
-        zio-aws-kafkaconnect/compile
+        zio-aws-kafkaconnect/compile zio-aws-kendra/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-greengrass/publishSigned
@@ -573,7 +577,7 @@ jobs:
         zio-aws-iotjobsdataplane/publishSigned zio-aws-iotsecuretunneling/publishSigned
         zio-aws-iotsitewise/publishSigned zio-aws-iotthingsgraph/publishSigned zio-aws-iottwinmaker/publishSigned
         zio-aws-iotwireless/publishSigned zio-aws-ivs/publishSigned zio-aws-ivschat/publishSigned
-        zio-aws-kafka/publishSigned zio-aws-kafkaconnect/publishSigned
+        zio-aws-kafka/publishSigned zio-aws-kafkaconnect/publishSigned zio-aws-kendra/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -593,7 +597,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -641,33 +645,34 @@ jobs:
         rm targets.tar
     - name: Build libraries
       if: ${{ github.ref != 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-kendra/compile
-        zio-aws-keyspaces/compile zio-aws-kinesis/compile zio-aws-kinesisanalytics/compile
-        zio-aws-kinesisanalyticsv2/compile zio-aws-kinesisvideo/compile zio-aws-kinesisvideoarchivedmedia/compile
-        zio-aws-kinesisvideomedia/compile zio-aws-kinesisvideosignaling/compile zio-aws-kms/compile
-        zio-aws-lakeformation/compile zio-aws-lambda/compile zio-aws-lexmodelbuilding/compile
-        zio-aws-lexmodelsv2/compile zio-aws-lexruntime/compile zio-aws-lexruntimev2/compile
-        zio-aws-licensemanager/compile zio-aws-lightsail/compile zio-aws-location/compile
-        zio-aws-lookoutequipment/compile zio-aws-lookoutmetrics/compile zio-aws-lookoutvision/compile
-        zio-aws-machinelearning/compile zio-aws-macie/compile zio-aws-macie2/compile
-        zio-aws-managedblockchain/compile zio-aws-marketplacecatalog/compile zio-aws-marketplacecommerceanalytics/compile
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-keyspaces/compile
+        zio-aws-kinesis/compile zio-aws-kinesisanalytics/compile zio-aws-kinesisanalyticsv2/compile
+        zio-aws-kinesisvideo/compile zio-aws-kinesisvideoarchivedmedia/compile zio-aws-kinesisvideomedia/compile
+        zio-aws-kinesisvideosignaling/compile zio-aws-kms/compile zio-aws-lakeformation/compile
+        zio-aws-lambda/compile zio-aws-lexmodelbuilding/compile zio-aws-lexmodelsv2/compile
+        zio-aws-lexruntime/compile zio-aws-lexruntimev2/compile zio-aws-licensemanager/compile
+        zio-aws-licensemanagerusersubscriptions/compile zio-aws-lightsail/compile
+        zio-aws-location/compile zio-aws-lookoutequipment/compile zio-aws-lookoutmetrics/compile
+        zio-aws-lookoutvision/compile zio-aws-m2/compile zio-aws-machinelearning/compile
+        zio-aws-macie/compile zio-aws-macie2/compile zio-aws-managedblockchain/compile
+        zio-aws-marketplacecatalog/compile zio-aws-marketplacecommerceanalytics/compile
         zio-aws-marketplaceentitlement/compile zio-aws-marketplacemetering/compile
         zio-aws-mediaconnect/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-kendra/publishSigned
-        zio-aws-keyspaces/publishSigned zio-aws-kinesis/publishSigned zio-aws-kinesisanalytics/publishSigned
-        zio-aws-kinesisanalyticsv2/publishSigned zio-aws-kinesisvideo/publishSigned
-        zio-aws-kinesisvideoarchivedmedia/publishSigned zio-aws-kinesisvideomedia/publishSigned
-        zio-aws-kinesisvideosignaling/publishSigned zio-aws-kms/publishSigned zio-aws-lakeformation/publishSigned
-        zio-aws-lambda/publishSigned zio-aws-lexmodelbuilding/publishSigned zio-aws-lexmodelsv2/publishSigned
-        zio-aws-lexruntime/publishSigned zio-aws-lexruntimev2/publishSigned zio-aws-licensemanager/publishSigned
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-keyspaces/publishSigned
+        zio-aws-kinesis/publishSigned zio-aws-kinesisanalytics/publishSigned zio-aws-kinesisanalyticsv2/publishSigned
+        zio-aws-kinesisvideo/publishSigned zio-aws-kinesisvideoarchivedmedia/publishSigned
+        zio-aws-kinesisvideomedia/publishSigned zio-aws-kinesisvideosignaling/publishSigned
+        zio-aws-kms/publishSigned zio-aws-lakeformation/publishSigned zio-aws-lambda/publishSigned
+        zio-aws-lexmodelbuilding/publishSigned zio-aws-lexmodelsv2/publishSigned zio-aws-lexruntime/publishSigned
+        zio-aws-lexruntimev2/publishSigned zio-aws-licensemanager/publishSigned zio-aws-licensemanagerusersubscriptions/publishSigned
         zio-aws-lightsail/publishSigned zio-aws-location/publishSigned zio-aws-lookoutequipment/publishSigned
-        zio-aws-lookoutmetrics/publishSigned zio-aws-lookoutvision/publishSigned zio-aws-machinelearning/publishSigned
-        zio-aws-macie/publishSigned zio-aws-macie2/publishSigned zio-aws-managedblockchain/publishSigned
-        zio-aws-marketplacecatalog/publishSigned zio-aws-marketplacecommerceanalytics/publishSigned
-        zio-aws-marketplaceentitlement/publishSigned zio-aws-marketplacemetering/publishSigned
-        zio-aws-mediaconnect/publishSigned
+        zio-aws-lookoutmetrics/publishSigned zio-aws-lookoutvision/publishSigned zio-aws-m2/publishSigned
+        zio-aws-machinelearning/publishSigned zio-aws-macie/publishSigned zio-aws-macie2/publishSigned
+        zio-aws-managedblockchain/publishSigned zio-aws-marketplacecatalog/publishSigned
+        zio-aws-marketplacecommerceanalytics/publishSigned zio-aws-marketplaceentitlement/publishSigned
+        zio-aws-marketplacemetering/publishSigned zio-aws-mediaconnect/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -687,7 +692,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -746,6 +751,7 @@ jobs:
         zio-aws-opsworks/compile zio-aws-opsworkscm/compile zio-aws-organizations/compile
         zio-aws-outposts/compile zio-aws-panorama/compile zio-aws-personalize/compile
         zio-aws-personalizeevents/compile zio-aws-personalizeruntime/compile zio-aws-pi/compile
+        zio-aws-pinpoint/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-mediaconvert/publishSigned
@@ -759,7 +765,7 @@ jobs:
         zio-aws-nimble/publishSigned zio-aws-opensearch/publishSigned zio-aws-opsworks/publishSigned
         zio-aws-opsworkscm/publishSigned zio-aws-organizations/publishSigned zio-aws-outposts/publishSigned
         zio-aws-panorama/publishSigned zio-aws-personalize/publishSigned zio-aws-personalizeevents/publishSigned
-        zio-aws-personalizeruntime/publishSigned zio-aws-pi/publishSigned
+        zio-aws-personalizeruntime/publishSigned zio-aws-pi/publishSigned zio-aws-pinpoint/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -779,7 +785,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -827,32 +833,32 @@ jobs:
         rm targets.tar
     - name: Build libraries
       if: ${{ github.ref != 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-pinpoint/compile
-        zio-aws-pinpointemail/compile zio-aws-pinpointsmsvoice/compile zio-aws-pinpointsmsvoicev2/compile
-        zio-aws-polly/compile zio-aws-pricing/compile zio-aws-proton/compile zio-aws-qldb/compile
-        zio-aws-qldbsession/compile zio-aws-quicksight/compile zio-aws-ram/compile
-        zio-aws-rbin/compile zio-aws-rds/compile zio-aws-rdsdata/compile zio-aws-redshift/compile
-        zio-aws-redshiftdata/compile zio-aws-rekognition/compile zio-aws-resiliencehub/compile
-        zio-aws-resourcegroups/compile zio-aws-resourcegroupstaggingapi/compile zio-aws-robomaker/compile
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-pinpointemail/compile
+        zio-aws-pinpointsmsvoice/compile zio-aws-pinpointsmsvoicev2/compile zio-aws-polly/compile
+        zio-aws-pricing/compile zio-aws-privatenetworks/compile zio-aws-proton/compile
+        zio-aws-qldb/compile zio-aws-qldbsession/compile zio-aws-quicksight/compile
+        zio-aws-ram/compile zio-aws-rbin/compile zio-aws-rds/compile zio-aws-rdsdata/compile
+        zio-aws-redshift/compile zio-aws-redshiftdata/compile zio-aws-redshiftserverless/compile
+        zio-aws-rekognition/compile zio-aws-resiliencehub/compile zio-aws-resourcegroups/compile
+        zio-aws-resourcegroupstaggingapi/compile zio-aws-robomaker/compile zio-aws-rolesanywhere/compile
         zio-aws-route53/compile zio-aws-route53domains/compile zio-aws-route53recoverycluster/compile
         zio-aws-route53recoverycontrolconfig/compile zio-aws-route53recoveryreadiness/compile
         zio-aws-route53resolver/compile zio-aws-rum/compile zio-aws-s3/compile zio-aws-s3control/compile
-        zio-aws-s3outposts/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-pinpoint/publishSigned
-        zio-aws-pinpointemail/publishSigned zio-aws-pinpointsmsvoice/publishSigned
-        zio-aws-pinpointsmsvoicev2/publishSigned zio-aws-polly/publishSigned zio-aws-pricing/publishSigned
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-pinpointemail/publishSigned
+        zio-aws-pinpointsmsvoice/publishSigned zio-aws-pinpointsmsvoicev2/publishSigned
+        zio-aws-polly/publishSigned zio-aws-pricing/publishSigned zio-aws-privatenetworks/publishSigned
         zio-aws-proton/publishSigned zio-aws-qldb/publishSigned zio-aws-qldbsession/publishSigned
         zio-aws-quicksight/publishSigned zio-aws-ram/publishSigned zio-aws-rbin/publishSigned
         zio-aws-rds/publishSigned zio-aws-rdsdata/publishSigned zio-aws-redshift/publishSigned
-        zio-aws-redshiftdata/publishSigned zio-aws-rekognition/publishSigned zio-aws-resiliencehub/publishSigned
-        zio-aws-resourcegroups/publishSigned zio-aws-resourcegroupstaggingapi/publishSigned
-        zio-aws-robomaker/publishSigned zio-aws-route53/publishSigned zio-aws-route53domains/publishSigned
+        zio-aws-redshiftdata/publishSigned zio-aws-redshiftserverless/publishSigned
+        zio-aws-rekognition/publishSigned zio-aws-resiliencehub/publishSigned zio-aws-resourcegroups/publishSigned
+        zio-aws-resourcegroupstaggingapi/publishSigned zio-aws-robomaker/publishSigned
+        zio-aws-rolesanywhere/publishSigned zio-aws-route53/publishSigned zio-aws-route53domains/publishSigned
         zio-aws-route53recoverycluster/publishSigned zio-aws-route53recoverycontrolconfig/publishSigned
         zio-aws-route53recoveryreadiness/publishSigned zio-aws-route53resolver/publishSigned
         zio-aws-rum/publishSigned zio-aws-s3/publishSigned zio-aws-s3control/publishSigned
-        zio-aws-s3outposts/publishSigned
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
@@ -872,7 +878,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -920,10 +926,11 @@ jobs:
         rm targets.tar
     - name: Build libraries
       if: ${{ github.ref != 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-sagemaker/compile
-        zio-aws-sagemakera2iruntime/compile zio-aws-sagemakeredge/compile zio-aws-sagemakerfeaturestoreruntime/compile
-        zio-aws-sagemakerruntime/compile zio-aws-savingsplans/compile zio-aws-schemas/compile
-        zio-aws-secretsmanager/compile zio-aws-securityhub/compile zio-aws-serverlessapplicationrepository/compile
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-s3outposts/compile
+        zio-aws-sagemaker/compile zio-aws-sagemakera2iruntime/compile zio-aws-sagemakeredge/compile
+        zio-aws-sagemakerfeaturestoreruntime/compile zio-aws-sagemakerruntime/compile
+        zio-aws-savingsplans/compile zio-aws-schemas/compile zio-aws-secretsmanager/compile
+        zio-aws-securityhub/compile zio-aws-serverlessapplicationrepository/compile
         zio-aws-servicecatalog/compile zio-aws-servicecatalogappregistry/compile zio-aws-servicediscovery/compile
         zio-aws-servicequotas/compile zio-aws-ses/compile zio-aws-sesv2/compile zio-aws-sfn/compile
         zio-aws-shield/compile zio-aws-signer/compile zio-aws-sms/compile zio-aws-snowball/compile
@@ -932,16 +939,16 @@ jobs:
         zio-aws-sso/compile zio-aws-ssoadmin/compile zio-aws-ssooidc/compile zio-aws-storagegateway/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
-      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-sagemaker/publishSigned
-        zio-aws-sagemakera2iruntime/publishSigned zio-aws-sagemakeredge/publishSigned
-        zio-aws-sagemakerfeaturestoreruntime/publishSigned zio-aws-sagemakerruntime/publishSigned
-        zio-aws-savingsplans/publishSigned zio-aws-schemas/publishSigned zio-aws-secretsmanager/publishSigned
-        zio-aws-securityhub/publishSigned zio-aws-serverlessapplicationrepository/publishSigned
-        zio-aws-servicecatalog/publishSigned zio-aws-servicecatalogappregistry/publishSigned
-        zio-aws-servicediscovery/publishSigned zio-aws-servicequotas/publishSigned
-        zio-aws-ses/publishSigned zio-aws-sesv2/publishSigned zio-aws-sfn/publishSigned
-        zio-aws-shield/publishSigned zio-aws-signer/publishSigned zio-aws-sms/publishSigned
-        zio-aws-snowball/publishSigned zio-aws-snowdevicemanagement/publishSigned
+      run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-s3outposts/publishSigned
+        zio-aws-sagemaker/publishSigned zio-aws-sagemakera2iruntime/publishSigned
+        zio-aws-sagemakeredge/publishSigned zio-aws-sagemakerfeaturestoreruntime/publishSigned
+        zio-aws-sagemakerruntime/publishSigned zio-aws-savingsplans/publishSigned
+        zio-aws-schemas/publishSigned zio-aws-secretsmanager/publishSigned zio-aws-securityhub/publishSigned
+        zio-aws-serverlessapplicationrepository/publishSigned zio-aws-servicecatalog/publishSigned
+        zio-aws-servicecatalogappregistry/publishSigned zio-aws-servicediscovery/publishSigned
+        zio-aws-servicequotas/publishSigned zio-aws-ses/publishSigned zio-aws-sesv2/publishSigned
+        zio-aws-sfn/publishSigned zio-aws-shield/publishSigned zio-aws-signer/publishSigned
+        zio-aws-sms/publishSigned zio-aws-snowball/publishSigned zio-aws-snowdevicemanagement/publishSigned
         zio-aws-sns/publishSigned zio-aws-sqs/publishSigned zio-aws-ssm/publishSigned
         zio-aws-ssmcontacts/publishSigned zio-aws-ssmincidents/publishSigned zio-aws-sso/publishSigned
         zio-aws-ssoadmin/publishSigned zio-aws-ssooidc/publishSigned zio-aws-storagegateway/publishSigned
@@ -964,7 +971,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -1013,19 +1020,20 @@ jobs:
     - name: Build libraries
       if: ${{ github.ref != 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-sts/compile
-        zio-aws-support/compile zio-aws-swf/compile zio-aws-synthetics/compile zio-aws-textract/compile
-        zio-aws-timestreamquery/compile zio-aws-timestreamwrite/compile zio-aws-transcribe/compile
-        zio-aws-transcribestreaming/compile zio-aws-transfer/compile zio-aws-translate/compile
-        zio-aws-voiceid/compile zio-aws-waf/compile zio-aws-wafregional/compile zio-aws-wafv2/compile
-        zio-aws-wellarchitected/compile zio-aws-wisdom/compile zio-aws-workdocs/compile
-        zio-aws-worklink/compile zio-aws-workmail/compile zio-aws-workmailmessageflow/compile
-        zio-aws-workspaces/compile zio-aws-workspacesweb/compile zio-aws-xray/compile
+        zio-aws-support/compile zio-aws-supportapp/compile zio-aws-swf/compile zio-aws-synthetics/compile
+        zio-aws-textract/compile zio-aws-timestreamquery/compile zio-aws-timestreamwrite/compile
+        zio-aws-transcribe/compile zio-aws-transcribestreaming/compile zio-aws-transfer/compile
+        zio-aws-translate/compile zio-aws-voiceid/compile zio-aws-waf/compile zio-aws-wafregional/compile
+        zio-aws-wafv2/compile zio-aws-wellarchitected/compile zio-aws-wisdom/compile
+        zio-aws-workdocs/compile zio-aws-worklink/compile zio-aws-workmail/compile
+        zio-aws-workmailmessageflow/compile zio-aws-workspaces/compile zio-aws-workspacesweb/compile
+        zio-aws-xray/compile
     - name: Build and publish libraries
       if: ${{ github.ref == 'refs/heads/master' }}
       run: sbt -J-XX:+UseG1GC -J-Xmx6g -J-Xms6g -J-Xss16m ++${{ matrix.scala }} zio-aws-sts/publishSigned
-        zio-aws-support/publishSigned zio-aws-swf/publishSigned zio-aws-synthetics/publishSigned
-        zio-aws-textract/publishSigned zio-aws-timestreamquery/publishSigned zio-aws-timestreamwrite/publishSigned
-        zio-aws-transcribe/publishSigned zio-aws-transcribestreaming/publishSigned
+        zio-aws-support/publishSigned zio-aws-supportapp/publishSigned zio-aws-swf/publishSigned
+        zio-aws-synthetics/publishSigned zio-aws-textract/publishSigned zio-aws-timestreamquery/publishSigned
+        zio-aws-timestreamwrite/publishSigned zio-aws-transcribe/publishSigned zio-aws-transcribestreaming/publishSigned
         zio-aws-transfer/publishSigned zio-aws-translate/publishSigned zio-aws-voiceid/publishSigned
         zio-aws-waf/publishSigned zio-aws-wafregional/publishSigned zio-aws-wafv2/publishSigned
         zio-aws-wellarchitected/publishSigned zio-aws-wisdom/publishSigned zio-aws-workdocs/publishSigned
@@ -1050,7 +1058,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -1121,7 +1129,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
+        - ubuntu-20.04
         scala:
         - 2.12.15
         - 2.13.8
@@ -1223,12 +1231,12 @@ jobs:
           ~/.coursier/cache/v1
 
           ~/.cache/coursier/v1
-        key: ubuntu-latest-sbt-2.13.8-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('**/build.properties')
+        key: ubuntu-20.04-sbt-2.13.8-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('**/build.properties')
           }}
     - name: Download stored core targets
       uses: actions/download-artifact@v2
       with:
-        name: target-core-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-core-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate core targets
       run: tar xvf targets.tar
 
@@ -1236,7 +1244,7 @@ jobs:
     - name: Download stored clients-0 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-0-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-0-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-0 targets
       run: tar xvf targets.tar
 
@@ -1244,7 +1252,7 @@ jobs:
     - name: Download stored clients-1 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-1-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-1-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-1 targets
       run: tar xvf targets.tar
 
@@ -1252,7 +1260,7 @@ jobs:
     - name: Download stored clients-2 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-2-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-2-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-2 targets
       run: tar xvf targets.tar
 
@@ -1260,7 +1268,7 @@ jobs:
     - name: Download stored clients-3 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-3-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-3-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-3 targets
       run: tar xvf targets.tar
 
@@ -1268,7 +1276,7 @@ jobs:
     - name: Download stored clients-4 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-4-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-4-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-4 targets
       run: tar xvf targets.tar
 
@@ -1276,7 +1284,7 @@ jobs:
     - name: Download stored clients-5 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-5-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-5-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-5 targets
       run: tar xvf targets.tar
 
@@ -1284,7 +1292,7 @@ jobs:
     - name: Download stored clients-6 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-6-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-6-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-6 targets
       run: tar xvf targets.tar
 
@@ -1292,7 +1300,7 @@ jobs:
     - name: Download stored clients-7 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-7-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-7-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-7 targets
       run: tar xvf targets.tar
 
@@ -1300,7 +1308,7 @@ jobs:
     - name: Download stored clients-8 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-8-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-8-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-8 targets
       run: tar xvf targets.tar
 
@@ -1308,7 +1316,7 @@ jobs:
     - name: Download stored clients-9 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-9-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-9-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-9 targets
       run: tar xvf targets.tar
 
@@ -1316,7 +1324,7 @@ jobs:
     - name: Download stored clients-10 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-10-ubuntu-latest-2.13.8-zulu@1.17
+        name: target-clients-10-ubuntu-20.04-2.13.8-zulu@1.17
     - name: Inflate clients-10 targets
       run: tar xvf targets.tar
 
@@ -1324,7 +1332,7 @@ jobs:
     - name: Download stored core targets
       uses: actions/download-artifact@v2
       with:
-        name: target-core-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-core-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate core targets
       run: tar xvf targets.tar
 
@@ -1332,7 +1340,7 @@ jobs:
     - name: Download stored clients-0 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-0-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-0-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-0 targets
       run: tar xvf targets.tar
 
@@ -1340,7 +1348,7 @@ jobs:
     - name: Download stored clients-1 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-1-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-1-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-1 targets
       run: tar xvf targets.tar
 
@@ -1348,7 +1356,7 @@ jobs:
     - name: Download stored clients-2 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-2-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-2-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-2 targets
       run: tar xvf targets.tar
 
@@ -1356,7 +1364,7 @@ jobs:
     - name: Download stored clients-3 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-3-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-3-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-3 targets
       run: tar xvf targets.tar
 
@@ -1364,7 +1372,7 @@ jobs:
     - name: Download stored clients-4 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-4-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-4-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-4 targets
       run: tar xvf targets.tar
 
@@ -1372,7 +1380,7 @@ jobs:
     - name: Download stored clients-5 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-5-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-5-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-5 targets
       run: tar xvf targets.tar
 
@@ -1380,7 +1388,7 @@ jobs:
     - name: Download stored clients-6 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-6-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-6-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-6 targets
       run: tar xvf targets.tar
 
@@ -1388,7 +1396,7 @@ jobs:
     - name: Download stored clients-7 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-7-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-7-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-7 targets
       run: tar xvf targets.tar
 
@@ -1396,7 +1404,7 @@ jobs:
     - name: Download stored clients-8 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-8-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-8-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-8 targets
       run: tar xvf targets.tar
 
@@ -1404,7 +1412,7 @@ jobs:
     - name: Download stored clients-9 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-9-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-9-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-9 targets
       run: tar xvf targets.tar
 
@@ -1412,7 +1420,7 @@ jobs:
     - name: Download stored clients-10 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-10-ubuntu-latest-2.12.15-zulu@1.17
+        name: target-clients-10-ubuntu-20.04-2.12.15-zulu@1.17
     - name: Inflate clients-10 targets
       run: tar xvf targets.tar
 
@@ -1420,7 +1428,7 @@ jobs:
     - name: Download stored core targets
       uses: actions/download-artifact@v2
       with:
-        name: target-core-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-core-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate core targets
       run: tar xvf targets.tar
 
@@ -1428,7 +1436,7 @@ jobs:
     - name: Download stored clients-0 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-0-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-0-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-0 targets
       run: tar xvf targets.tar
 
@@ -1436,7 +1444,7 @@ jobs:
     - name: Download stored clients-1 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-1-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-1-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-1 targets
       run: tar xvf targets.tar
 
@@ -1444,7 +1452,7 @@ jobs:
     - name: Download stored clients-2 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-2-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-2-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-2 targets
       run: tar xvf targets.tar
 
@@ -1452,7 +1460,7 @@ jobs:
     - name: Download stored clients-3 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-3-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-3-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-3 targets
       run: tar xvf targets.tar
 
@@ -1460,7 +1468,7 @@ jobs:
     - name: Download stored clients-4 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-4-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-4-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-4 targets
       run: tar xvf targets.tar
 
@@ -1468,7 +1476,7 @@ jobs:
     - name: Download stored clients-5 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-5-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-5-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-5 targets
       run: tar xvf targets.tar
 
@@ -1476,7 +1484,7 @@ jobs:
     - name: Download stored clients-6 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-6-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-6-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-6 targets
       run: tar xvf targets.tar
 
@@ -1484,7 +1492,7 @@ jobs:
     - name: Download stored clients-7 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-7-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-7-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-7 targets
       run: tar xvf targets.tar
 
@@ -1492,7 +1500,7 @@ jobs:
     - name: Download stored clients-8 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-8-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-8-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-8 targets
       run: tar xvf targets.tar
 
@@ -1500,7 +1508,7 @@ jobs:
     - name: Download stored clients-9 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-9-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-9-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-9 targets
       run: tar xvf targets.tar
 
@@ -1508,7 +1516,7 @@ jobs:
     - name: Download stored clients-10 targets
       uses: actions/download-artifact@v2
       with:
-        name: target-clients-10-ubuntu-latest-3.1.0-zulu@1.17
+        name: target-clients-10-ubuntu-20.04-3.1.0-zulu@1.17
     - name: Inflate clients-10 targets
       run: tar xvf targets.tar
 
@@ -1545,7 +1553,7 @@ jobs:
           ~/.coursier/cache/v1
 
           ~/.cache/coursier/v1
-        key: ubuntu-latest-sbt-2.13.8-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('**/build.properties')
+        key: ubuntu-20.04-sbt-2.13.8-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('**/build.properties')
           }}
     - name: Setup GIT user
       uses: fregante/setup-git-user@v1
