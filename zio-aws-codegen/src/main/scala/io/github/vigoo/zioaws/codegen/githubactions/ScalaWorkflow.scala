@@ -1,8 +1,7 @@
 package io.github.vigoo.zioaws.codegen.githubactions
 
-import io.circe._
 import io.circe.syntax._
-import io.github.vigoo.zioaws.codegen.githubactions.ScalaWorkflow.JavaVersion.AdoptJDK18
+import io.github.vigoo.zioaws.codegen.githubactions.ScalaWorkflow.JavaVersion.ZuluJDK17
 
 object ScalaWorkflow {
   import Step._
@@ -219,7 +218,7 @@ object ScalaWorkflow {
     def matrix(
         scalaVersions: Seq[ScalaVersion],
         operatingSystems: Seq[OS] = Seq(OS.UbuntuLatest),
-        javaVersions: Seq[JavaVersion] = Seq(AdoptJDK18)
+        javaVersions: Seq[JavaVersion] = Seq(ZuluJDK17)
     ): Job =
       job.copy(
         strategy = Some(
