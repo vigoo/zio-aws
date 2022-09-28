@@ -1,6 +1,6 @@
 package io.github.vigoo.zioaws.codegen.generator
 
-import io.github.vigoo.zioaws.codegen.loader.ModelId
+import io.github.vigoo.zioaws.codegen.loader.ModuleId
 import software.amazon.awssdk.codegen.C2jModels
 import software.amazon.awssdk.codegen.model.service.{Operation, Shape}
 import software.amazon.awssdk.codegen.naming.NamingStrategy
@@ -15,7 +15,7 @@ package object context {
 
   object AwsGeneratorContext {
     trait Service {
-      val service: ModelId
+      val service: ModuleId
       val pkg: Package
       val modelPkg: Package
       val paginatorPkg: Package
@@ -28,7 +28,7 @@ package object context {
     }
   }
 
-  def getService: ZIO[AwsGeneratorContext, Nothing, ModelId] =
+  def getService: ZIO[AwsGeneratorContext, Nothing, ModuleId] =
     ZIO.access(_.get.service)
   def getServiceName: ZIO[AwsGeneratorContext, Nothing, String] =
     ZIO.access(_.get.service.name)

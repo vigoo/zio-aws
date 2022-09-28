@@ -4,7 +4,7 @@ import io.circe.Json
 import io.circe.syntax._
 import io.circe.yaml
 import io.circe.yaml.Printer.{LineBreak, StringStyle, YamlVersion}
-import io.github.vigoo.zioaws.codegen.loader.ModelId
+import io.github.vigoo.zioaws.codegen.loader.ModuleId
 import io.github.vigoo.zioaws.codegen.githubactions._
 import io.github.vigoo.zioaws.codegen.githubactions.ScalaWorkflow._
 
@@ -12,7 +12,7 @@ trait GithubActionsGenerator {
   this: HasConfig with GeneratorBase =>
 
   def generateCiYaml(
-      ids: Set[ModelId],
+      ids: Set[ModuleId],
       parallelJobs: Int,
       separateJobs: Set[String]
   ): String = {

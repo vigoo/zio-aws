@@ -17,89 +17,89 @@ import scala.jdk.CollectionConverters._
 object OperationCollector {
   val overrides: Set[PaginationOverride] = Set(
     PaginationNotSupported(
-      loader.ModelId("greengrass", None),
+      loader.ModuleId("greengrass", None),
       "GetDeviceDefinitionVersion"
     ),
     PaginationNotSupported(
-      loader.ModelId("greengrass", None),
+      loader.ModuleId("greengrass", None),
       "GetSubscriptionDefinitionVersion"
     ),
     PaginationNotSupported(
-      loader.ModelId("greengrass", None),
+      loader.ModuleId("greengrass", None),
       "GetFunctionDefinitionVersion"
     ),
     PaginationNotSupported(
-      loader.ModelId("greengrass", None),
+      loader.ModuleId("greengrass", None),
       "GetConnectorDefinitionVersion"
     ),
     PaginationNotSupported(
-      loader.ModelId("budgets", None),
+      loader.ModuleId("budgets", None),
       "DescribeBudgetPerformanceHistory"
     ),
     SelectNestedPaginatedListMember(
-      loader.ModelId("athena", None),
+      loader.ModuleId("athena", None),
       "GetQueryResults",
       "ResultSet",
       "ResultSetMetadata",
       "Rows"
     ),
     PaginationNotSupported(
-      loader.ModelId("guardduty", None),
+      loader.ModuleId("guardduty", None),
       "GetUsageStatistics"
     ),
     SelectPaginatedStringMember(
-      loader.ModelId("fms", None),
+      loader.ModuleId("fms", None),
       "GetProtectionStatus",
       "Data"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("cloudformation", None),
+      loader.ModuleId("cloudformation", None),
       "DescribeChangeSet",
       "Changes"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("ec2", None),
+      loader.ModuleId("ec2", None),
       "DescribeVpcEndpointServices",
       "ServiceDetails"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("pi", None),
+      loader.ModuleId("pi", None),
       "DescribeDimensionKeys",
       "Keys"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("cognitosync", None),
+      loader.ModuleId("cognitosync", None),
       "ListRecords",
       "Records"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("textract", None),
+      loader.ModuleId("textract", None),
       "GetDocumentAnalysis",
       "Blocks"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("textract", None),
+      loader.ModuleId("textract", None),
       "GetDocumentTextDetection",
       "Blocks"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("resourcegroups", None),
+      loader.ModuleId("resourcegroups", None),
       "ListGroups",
       "Groups"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("resourcegroups", None),
+      loader.ModuleId("resourcegroups", None),
       "SearchResources",
       "ResourceIdentifiers"
     ),
     SelectPaginatedListMember(
-      loader.ModelId("resourcegroups", None),
+      loader.ModuleId("resourcegroups", None),
       "ListGroupResources",
       "ResourceIdentifiers"
     )
   )
 
-  case class OverrideKey(id: loader.ModelId, opName: String)
+  case class OverrideKey(id: loader.ModuleId, opName: String)
 
   val overrideMap: Map[OverrideKey, PaginationOverride] =
     overrides.map(o => o.toKey -> o).toMap
@@ -435,13 +435,13 @@ object OperationCollector {
     def toKey: OverrideKey
   }
 
-  case class PaginationNotSupported(id: loader.ModelId, opName: String)
+  case class PaginationNotSupported(id: loader.ModuleId, opName: String)
       extends PaginationOverride {
     override def toKey: OverrideKey = OverrideKey(id, opName)
   }
 
   case class SelectPaginatedListMember(
-      id: loader.ModelId,
+      id: loader.ModuleId,
       opName: String,
       memberName: String
   ) extends PaginationOverride {
@@ -449,7 +449,7 @@ object OperationCollector {
   }
 
   case class SelectNestedPaginatedListMember(
-      id: loader.ModelId,
+      id: loader.ModuleId,
       opName: String,
       innerName: String,
       resultName: String,
@@ -459,7 +459,7 @@ object OperationCollector {
   }
 
   case class SelectPaginatedStringMember(
-      id: loader.ModelId,
+      id: loader.ModuleId,
       opName: String,
       memberName: String
   ) extends PaginationOverride {
