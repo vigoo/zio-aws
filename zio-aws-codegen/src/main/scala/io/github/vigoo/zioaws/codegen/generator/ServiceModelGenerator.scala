@@ -208,6 +208,8 @@ trait ServiceModelGenerator {
       wrapper <- m.typ match {
         case ModelType.Structure =>
           generateStructure(m, javaType)
+        case ModelType.Document =>
+          generateDocument(m)
         case ModelType.List =>
           generateList(m)
         case ModelType.Map =>
@@ -465,6 +467,19 @@ trait ServiceModelGenerator {
       name = m.generatedType.name
     )
   }
+
+  private def generateDocument(
+      m: Model
+  ): ZIO[AwsGeneratorContext, AwsGeneratorFailure, ModelWrapper] =
+    ZIO.succeed {
+      ModelWrapper(
+        fileName = None,
+        code = List(
+          q"""type ${m.generatedType.typName} = ${Types.awsDocument.typ}"""
+        ),
+        name = m.generatedType.name
+      )
+    }
 
   private def generateList(
       m: Model
