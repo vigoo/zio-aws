@@ -4,7 +4,7 @@ import io.circe.Json
 import io.circe.syntax._
 import io.circe.yaml
 import io.circe.yaml.Printer.{LineBreak, StringStyle, YamlVersion}
-import io.github.vigoo.zioaws.codegen.loader.ModelId
+import io.github.vigoo.zioaws.codegen.loader.ModuleId
 import io.github.vigoo.zioaws.codegen.githubactions._
 import io.github.vigoo.zioaws.codegen.githubactions.ScalaWorkflow._
 
@@ -12,7 +12,7 @@ trait GithubActionsGenerator {
   this: HasConfig with GeneratorBase =>
 
   def generateCiYaml(
-      ids: Set[ModelId],
+      ids: Set[ModuleId],
       parallelJobs: Int,
       separateJobs: Set[String]
   ): String = {
@@ -56,7 +56,7 @@ trait GithubActionsGenerator {
             "Tag build"
           ).withSteps(
             checkoutCurrentBranch(),
-            setupScala(Some(JavaVersion.AdoptJDK18)),
+            setupScala(Some(JavaVersion.ZuluJDK17)),
             cacheSBT(
               os = Some(OS.UbuntuLatest),
               scalaVersion = Some(scala213)
@@ -242,7 +242,7 @@ trait GithubActionsGenerator {
             condition = Some(isMaster)
           ).withSteps(
             checkoutCurrentBranch(),
-            setupScala(Some(JavaVersion.AdoptJDK18)),
+            setupScala(Some(JavaVersion.ZuluJDK17)),
             setupGPG(),
             loadPGPSecret(),
             cacheSBT(
@@ -253,19 +253,19 @@ trait GithubActionsGenerator {
               "core" :: grouped.indices.map(idx => s"clients-$idx").toList,
               os = Some(OS.UbuntuLatest),
               scalaVersion = Some(scala213),
-              javaVersion = Some(JavaVersion.AdoptJDK18)
+              javaVersion = Some(JavaVersion.ZuluJDK17)
             ),
             loadStoredTargets(
               "core" :: grouped.indices.map(idx => s"clients-$idx").toList,
               os = Some(OS.UbuntuLatest),
               scalaVersion = Some(scala212),
-              javaVersion = Some(JavaVersion.AdoptJDK18)
+              javaVersion = Some(JavaVersion.ZuluJDK17)
             ),
             loadStoredTargets(
               "core" :: grouped.indices.map(idx => s"clients-$idx").toList,
               os = Some(OS.UbuntuLatest),
               scalaVersion = Some(scala3),
-              javaVersion = Some(JavaVersion.AdoptJDK18)
+              javaVersion = Some(JavaVersion.ZuluJDK17)
             ),
             runSBT(
               "Publish artifacts",
@@ -290,7 +290,7 @@ trait GithubActionsGenerator {
             condition = Some(isMaster)
           ).withSteps(
             checkoutCurrentBranch(),
-            setupScala(Some(JavaVersion.AdoptJDK18)),
+            setupScala(Some(JavaVersion.ZuluJDK17)),
             cacheSBT(
               os = Some(OS.UbuntuLatest),
               scalaVersion = Some(scala213)

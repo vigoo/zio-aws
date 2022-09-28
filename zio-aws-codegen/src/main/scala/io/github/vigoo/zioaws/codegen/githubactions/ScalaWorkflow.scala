@@ -1,8 +1,7 @@
 package io.github.vigoo.zioaws.codegen.githubactions
 
-import io.circe._
 import io.circe.syntax._
-import io.github.vigoo.zioaws.codegen.githubactions.ScalaWorkflow.JavaVersion.AdoptJDK18
+import io.github.vigoo.zioaws.codegen.githubactions.ScalaWorkflow.JavaVersion.ZuluJDK17
 
 object ScalaWorkflow {
   import Step._
@@ -209,13 +208,17 @@ object ScalaWorkflow {
     case object AdoptJDK18 extends JavaVersion {
       override val asString: String = "adopt@1.8"
     }
+
+    case object ZuluJDK17 extends JavaVersion {
+      override val asString: String = "zulu@1.17"
+    }
   }
 
   implicit class JobOps(job: Job) {
     def matrix(
         scalaVersions: Seq[ScalaVersion],
         operatingSystems: Seq[OS] = Seq(OS.UbuntuLatest),
-        javaVersions: Seq[JavaVersion] = Seq(AdoptJDK18)
+        javaVersions: Seq[JavaVersion] = Seq(ZuluJDK17)
     ): Job =
       job.copy(
         strategy = Some(
