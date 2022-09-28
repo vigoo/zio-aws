@@ -209,6 +209,10 @@ object ScalaWorkflow {
     case object AdoptJDK18 extends JavaVersion {
       override val asString: String = "adopt@1.8"
     }
+
+    case object ZuluJDK17 extends JavaVersion {
+      override val asString: String = "zulu@1.17"
+    }
   }
 
   implicit class JobOps(job: Job) {
