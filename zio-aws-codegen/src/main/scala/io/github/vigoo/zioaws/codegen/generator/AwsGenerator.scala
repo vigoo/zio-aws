@@ -3,7 +3,7 @@ package io.github.vigoo.zioaws.codegen.generator
 import io.github.vigoo.metagen.core.{Generator, GeneratorFailure, Package}
 import io.github.vigoo.zioaws.codegen.Parameters
 import io.github.vigoo.zioaws.codegen.generator.context._
-import io.github.vigoo.zioaws.codegen.loader.ModelId
+import io.github.vigoo.zioaws.codegen.loader.ModuleId
 import software.amazon.awssdk.codegen.C2jModels
 import software.amazon.awssdk.codegen.naming.{
   DefaultNamingStrategy,
@@ -17,7 +17,7 @@ import java.io.File
 
 trait AwsGenerator {
   def generateServiceCode(
-      id: ModelId,
+      id: ModuleId,
       model: C2jModels,
       sbtLogger: sbt.Logger
   ): ZIO[Console with Blocking, GeneratorFailure[AwsGeneratorFailure], Set[
@@ -25,11 +25,11 @@ trait AwsGenerator {
   ]]
 
   def generateCiYaml(
-      ids: Set[ModelId]
+      ids: Set[ModuleId]
   ): ZIO[Console with Blocking, GeneratorFailure[AwsGeneratorFailure], Unit]
 
   def generateArtifactList(
-      ids: Set[ModelId]
+      ids: Set[ModuleId]
   ): ZIO[Console with Blocking, GeneratorFailure[AwsGeneratorFailure], Unit]
 }
 
@@ -48,7 +48,7 @@ object AwsGenerator {
 
         val config: Parameters = cfg
 
-        private def getSdkPackage(id: ModelId): Package =
+        private def getSdkPackage(id: ModuleId): Package =
           id.subModuleName match {
             case Some(submodule) if submodule != id.name =>
               Package(
@@ -68,13 +68,13 @@ object AwsGenerator {
               )
           }
 
-        private def getSdkModelPackage(id: ModelId): Package =
+        private def getSdkModelPackage(id: ModuleId): Package =
           getSdkPackage(id) / "model"
 
-        private def getTargetPackage(id: ModelId): Package =
+        private def getTargetPackage(id: ModuleId): Package =
           Packages.zioaws / id.moduleName
 
-        private def getSdkPaginatorPackage(id: ModelId): Package =
+        private def getSdkPaginatorPackage(id: ModuleId): Package =
           id.subModuleName match {
             case Some(submodule) if submodule.nonEmpty =>
               Package(
@@ -98,14 +98,14 @@ object AwsGenerator {
           }
 
         private def createGeneratorContext(
-            id: ModelId,
+            id: ModuleId,
             model: C2jModels,
             sbtLogger: sbt.Logger
         ): ZLayer[Any, Nothing, AwsGeneratorContext] =
           ZLayer.succeed {
             new AwsGeneratorContext.Service {
               override val pkg: Package = getTargetPackage(id)
-              override val service: ModelId = id
+              override val service: ModuleId = id
               override val modelPkg: Package = getSdkModelPackage(id)
               override val paginatorPkg: Package =
                 getSdkPaginatorPackage(id)
@@ -127,7 +127,7 @@ object AwsGenerator {
           }
 
         override def generateServiceCode(
-            id: ModelId,
+            id: ModuleId,
             model: C2jModels,
             sbtLogger: sbt.Logger
         ): ZIO[Console with Blocking, GeneratorFailure[
@@ -146,7 +146,7 @@ object AwsGenerator {
         }
 
         override def generateCiYaml(
-            ids: Set[ModelId]
+            ids: Set[ModuleId]
         ): ZIO[Console with Blocking, GeneratorFailure[
           AwsGeneratorFailure
         ], Unit] =
@@ -168,7 +168,7 @@ object AwsGenerator {
             .unit
 
         override def generateArtifactList(
-            ids: Set[ModelId]
+            ids: Set[ModuleId]
         ): ZIO[Console with Blocking, GeneratorFailure[
           AwsGeneratorFailure
         ], Unit] =
@@ -188,7 +188,7 @@ object AwsGenerator {
     }
 
   def generateServiceCode(
-      id: ModelId,
+      id: ModuleId,
       model: C2jModels,
       sbtLogger: sbt.Logger
   ): ZIO[Has[AwsGenerator] with Console with Blocking, GeneratorFailure[
@@ -199,14 +199,14 @@ object AwsGenerator {
     ZIO.accessM(_.get.generateServiceCode(id, model, sbtLogger))
 
   def generateCiYaml(
-      ids: Set[ModelId]
+      ids: Set[ModuleId]
   ): ZIO[Has[
     AwsGenerator
   ] with Console with Blocking, GeneratorFailure[AwsGeneratorFailure], Unit] =
     ZIO.accessM(_.get.generateCiYaml(ids))
 
   def generateArtifactList(
-      ids: Set[ModelId]
+      ids: Set[ModuleId]
   ): ZIO[Has[
     AwsGenerator
   ] with Console with Blocking, GeneratorFailure[AwsGeneratorFailure], Unit] =

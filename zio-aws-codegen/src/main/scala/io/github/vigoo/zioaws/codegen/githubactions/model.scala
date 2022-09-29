@@ -9,6 +9,7 @@ sealed trait OS {
 }
 object OS {
   case object UbuntuLatest extends OS { val asString = "ubuntu-latest" }
+  case object Ubuntu2004 extends OS { val asString = "ubuntu-20.04" }
 }
 
 sealed trait Branch

@@ -1,11 +1,11 @@
 package io.github.vigoo.zioaws.codegen.generator
 
-import io.github.vigoo.zioaws.codegen.loader.ModelId
+import io.github.vigoo.zioaws.codegen.loader.ModuleId
 
 trait ArtifactListGenerator {
   this: HasConfig with GeneratorBase =>
 
-  def generateArtifactList(ids: Set[ModelId], version: String): String = {
+  def generateArtifactList(ids: Set[ModuleId], version: String): String = {
     val prefix = s"""---
                     |layout: docs
                     |title: Artifacts

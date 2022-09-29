@@ -58,4 +58,7 @@ object Types {
   val throwable: ScalaType = ScalaType(Package.javaLang, "Throwable")
   val instant: ScalaType = ScalaType(Package.javaTime, "Instant")
   val bigDecimal: ScalaType = ScalaType(Package("scala", "math"), "BigDecimal")
+
+  val awsDocument: ScalaType =
+    ScalaType(Packages.awsCore / "document", "Document")
 }
