@@ -76,6 +76,8 @@ object TypeMapping {
         ZIO.succeed(model.sdkType)
       case ModelType.Structure =>
         ZIO.succeed(model.sdkType)
+      case ModelType.Document =>
+        ZIO.succeed(Types.awsDocument)
       case ModelType.Unknown(typ) =>
         getServiceName.flatMap(svc => ZIO.fail(UnknownType(svc, typ)))
     }
@@ -119,6 +121,8 @@ object TypeMapping {
           itemType <- toWrappedTypeReadOnly(itemModel)
         } yield ScalaType.list(itemType)
       case ModelType.Exception =>
+        toJavaType(model)
+      case ModelType.Document =>
         toJavaType(model)
       case ModelType.Structure =>
         ZIO.succeed(model.generatedType / "ReadOnly")

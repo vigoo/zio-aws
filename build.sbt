@@ -1,3 +1,4 @@
+
 import com.jsuereth.sbtpgp.PgpKeys.{pgpPublicRing, pgpSecretRing}
 import microsites.ConfigYml
 import scala.xml.{Node => XmlNode, NodeSeq => XmlNodeSeq, _}
@@ -31,7 +32,8 @@ lazy val core = Project("zio-aws-core", file("zio-aws-core"))
       "dev.zio" %% "zio-test-sbt" % zioVersion % "test",
       "dev.zio" %% "zio-config-typesafe" % zioConfigVersion % "test"
     ),
-    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
+    sources in (Compile, doc) := Seq.empty
   )
 
 lazy val http4s = Project("zio-aws-http4s", file("zio-aws-http4s"))
