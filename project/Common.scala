@@ -17,7 +17,7 @@ object Common extends AutoPlugin {
     val zioConfigVersion = "2.0.4"
     val catsEffectVersion = "3.3.8"
 
-    val awsVersion = "2.17.280"
+    val awsVersion = "2.17.286"
     val awsSubVersion = awsVersion.drop(awsVersion.indexOf('.') + 1)
     val http4sVersion = "0.23.11"
     val fs2Version = "3.2.5"
