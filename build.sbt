@@ -1,4 +1,3 @@
-
 import com.jsuereth.sbtpgp.PgpKeys.{pgpPublicRing, pgpSecretRing}
 import microsites.ConfigYml
 import scala.xml.{Node => XmlNode, NodeSeq => XmlNodeSeq, _}
@@ -58,7 +57,7 @@ lazy val akkahttp = Project("zio-aws-akka-http", file("zio-aws-akka-http"))
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-stream" % "2.6.18",
       "com.typesafe.akka" %% "akka-http" % "10.2.8",
-      "com.github.matsluni" %% "aws-spi-akka-http" % "0.0.11"
+      "com.github.matsluni" %% "aws-spi-akka-http" % "1.0.1"
     )
   )
   .dependsOn(core)
